@@ -29,7 +29,7 @@ class App extends React.Component {
     return (
       <>
         <input type="text" value={this.state.nome} onChange={this.modificarNome} />
-        <h1>Hello {this.state.nome} </h1>,
+        <h1>Hello {this.props.nome} sua idade é {this.props.idade} </h1>,
         <MeuComboBox />
       </>
     )
