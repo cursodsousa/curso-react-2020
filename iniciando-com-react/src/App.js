@@ -1,15 +1,23 @@
 import React from 'react';
 
-function ComponenteFuncional(){
-  return (
-    <h1>Hello</h1>
-  )
-}
-
 class App extends React.Component {
+
+  state = {
+    nome : ''
+  }
+
+  modificarNome = (event) => {
+    this.setState({
+      nome: event.target.value
+    })
+  }
+
   render(){
     return (
-      <h1>Hello from App</h1>
+      <>
+        <input type="text" value={this.state.nome} onChange={this.modificarNome} />
+        <h1>Hello {this.state.nome} </h1>
+      </>
     )
   }
 }
