@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -7,6 +7,9 @@ import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
+
+import {connect} from 'react-redux'
+import {compose} from 'redux'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,11 +24,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Topbar = props => {
-  const { className, onSidebarOpen, ...rest } = props;
+  const { className, history, onSidebarOpen, ...rest } = props;
 
   const classes = useStyles();
 
-  const [notifications] = useState([]);
+  const logout = () => {
+    localStorage.removeItem('email')
+    history.push('/login')
+  }
 
   return (
     <AppBar
@@ -43,14 +49,13 @@ const Topbar = props => {
         <Hidden mdDown>
           <IconButton color="inherit">
             <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
+              badgeContent={props.notificacoes}
+              color="secondary"
             >
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton
+          <IconButton onClick={logout}
             className={classes.signOutButton}
             color="inherit"
           >
@@ -75,4 +80,11 @@ Topbar.propTypes = {
   onSidebarOpen: PropTypes.func
 };
 
-export default Topbar;
+const mapStateToProps = state => ({
+  notificacoes: state.tarefas.size
+});
+
+export default compose (
+  withRouter , 
+  connect(mapStateToProps) 
+)(Topbar);

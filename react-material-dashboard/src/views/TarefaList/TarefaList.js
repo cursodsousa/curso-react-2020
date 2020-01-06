@@ -4,6 +4,10 @@ import { makeStyles } from '@material-ui/styles';
 import { TarefasToolbar, TarefasTable } from './components';
 import axios from 'axios'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { listar, salvar } from '../../store/tarefas'
+
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(3)
@@ -16,33 +20,8 @@ const useStyles = makeStyles(theme => ({
 const API_URL = 'https://minhastarefas-api.herokuapp.com/tarefas'
 const headers = {'x-tenant-id' : 'fulano@email.com'}
 
-const TarefaList = () => {
+const TarefaList = (props) => {
   const classes = useStyles();
-
-  const [tarefas, setTarefas] = useState([]);
-
-  const salvar = (tarefa) => {
-    axios.post(API_URL, tarefa, {
-      headers: headers
-    }).then( response => {
-      const novaTarefa = response.data
-      setTarefas( [...tarefas, novaTarefa] )
-    }).catch( erro => {
-      console.log(erro)
-    })
-  }
-
-  const listarTarefas = () => {
-    axios.get(API_URL, {
-      headers: headers
-    }).then(response => {
-      const listaDeTarefas = response.data
-      console.log(listaDeTarefas)
-      setTarefas(listaDeTarefas)
-    }).catch( erro => {
-      console.log(erro)
-    })
-  }
 
   const alterarStatus = (id) => {
     axios.patch(`${API_URL}/${id}`, null, {
@@ -55,17 +34,24 @@ const TarefaList = () => {
   }
 
   useEffect(() => {
-    listarTarefas();
+    props.listar();
   }, [] )
 
   return (
     <div className={classes.root}>
-      <TarefasToolbar salvar={salvar} />
+      <TarefasToolbar salvar={props.salvar} />
       <div className={classes.content}>
-        <TarefasTable alterarStatus={alterarStatus} tarefas={tarefas} />
+        <TarefasTable alterarStatus={alterarStatus} tarefas={props.tarefas} />
       </div>
     </div>
   );
 };
 
-export default TarefaList;
+const mapStateToProps = state => ({
+  tarefas: state.tarefas.tarefas   
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ salvar, listar }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps) (TarefaList);
