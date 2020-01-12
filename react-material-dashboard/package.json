@@ -2,6 +2,7 @@
   "name": "react-material-dashboard",
   "author": "DeviasIO",
   "email": "contact@devias.io",
+  "homepage" : ".",
   "licence": "MIT",
   "version": "0.3.0",
   "private": false,
