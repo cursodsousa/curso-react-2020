@@ -49,7 +49,7 @@
     "redux": "4.0.5",
     "redux-multi": "^0.1.12",
     "redux-thunk": "2.3.0",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "uuid": "^3.3.2",
     "validate.js": "^0.13.1"
   },
