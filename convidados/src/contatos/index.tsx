@@ -6,7 +6,12 @@ import { useContatosLogic } from './useContatosLogic'
 
 export const Contatos: FC = () => {
 
-    const { addContato, contato, contatosList } = useContatosLogic();
+    const { 
+        addContato, 
+        contato, 
+        contatosList, 
+        removeContato 
+    } = useContatosLogic();
 
     const handleFormSubmit = (contato: Contato) => {
         addContato(contato)
@@ -16,7 +21,7 @@ export const Contatos: FC = () => {
         <>
             <ContatosForm submeterFormulario={handleFormSubmit} 
                           contato={contato} />
-            <ContatosList list={contatosList} />
+            <ContatosList list={contatosList} onDelete={removeContato} />
         </>
     )
 }
